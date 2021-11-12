@@ -28,6 +28,13 @@ local.properties
 # PDT-specific
 .buildpath
 
+#################
+## Intellij
+#################
+
+*.idea
+*.iml
+
 
 #################
 ## Visual Studio
@@ -167,5 +174,5 @@ pip-log.txt
 #############
 
 log*
-*.ttf
 .checkstyle
+out
