@@ -6,6 +6,7 @@ import java.util.Set;
 import engine.Cooldown;
 import engine.Core;
 import engine.DrawManager.SpriteType;
+import screen.SoundEffects;
 
 /**
  * Implements a ship, to be controlled by the player.
@@ -26,6 +27,8 @@ public class Ship extends Entity {
 	private Cooldown shootingCooldown;
 	/** Time spent inactive between hits. */
 	private Cooldown destructionCooldown;
+
+	public SoundEffects shootingSound = new SoundEffects("shoot.wav");
 
 	/**
 	 * Constructor, establishes the ship's properties.
@@ -68,6 +71,7 @@ public class Ship extends Entity {
 	 */
 	public final boolean shoot(final Set<Bullet> bullets) {
 		if (this.shootingCooldown.checkFinished()) {
+			shootingSound.play(true);
 			this.shootingCooldown.reset();
 			bullets.add(BulletPool.getBullet(positionX + this.width / 2,
 					positionY, BULLET_SPEED));
