@@ -188,6 +188,7 @@ public class GameScreen extends Screen {
 					&& this.enemyShipSpecial.getPositionX() > this.width) {
 				this.enemyShipSpecial = null;
 				this.logger.info("The special ship has escaped");
+				this.lives--;
 			}
 
 			this.ship.update();
@@ -300,6 +301,7 @@ public class GameScreen extends Screen {
 					this.score += this.enemyShipSpecial.getPointValue();
 					this.shipsDestroyed++;
 					this.enemyShipSpecial.destroy();
+					this.lives++;
 					this.enemyShipSpecialExplosionCooldown.reset();
 					recyclable.add(bullet);
 				}
