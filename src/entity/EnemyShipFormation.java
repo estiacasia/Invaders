@@ -96,7 +96,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	/** Number of not destroyed ships. */
 	private int shipCount;
 
-	public SoundEffects enemyShootSound = new SoundEffects("enemyShootSound.wav");
+	public SoundEffects enemyShootingSound = new SoundEffects("enemyShootingSound.wav");
 	/** Directions the formation can move. */
 	private enum Direction {
 		/** Movement to the right side of the screen. */
@@ -338,7 +338,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		EnemyShip shooter = this.shooters.get(index);
 
 		if (this.shootingCooldown.checkFinished()) {
-			enemyShootSound.play(true);
+			enemyShootingSound.play(true);
 			this.shootingCooldown.reset();
 			bullets.add(BulletPool.getBullet(shooter.getPositionX()
 					+ shooter.width / 2, shooter.getPositionY(), BULLET_SPEED));

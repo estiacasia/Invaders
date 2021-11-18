@@ -67,7 +67,6 @@ public class GameScreen extends Screen {
 
 	public SoundEffects enemyDieSound = new SoundEffects("enemydiesound.wav");
 	public SoundEffects userDieSound = new SoundEffects("usershipdiesound.wav");
-	public SoundEffects shootingSound = new SoundEffects("shoot.wav");
 	public SoundEffects BGM = new SoundEffects("BGM.wav");
 	/**
 	 * Constructor, establishes the properties of the screen.
@@ -166,7 +165,6 @@ public class GameScreen extends Screen {
 				}
 				if (inputManager.isKeyDown(KeyEvent.VK_SPACE))
 					if (this.ship.shoot(this.bullets)) {
-						shootingSound.play(true);
 						this.bulletsShot++;
 					}
 			}
