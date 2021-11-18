@@ -96,6 +96,7 @@ public class GameScreen extends Screen {
 		this.lives = gameState.getLivesRemaining();
 		if (this.bonusLife)
 			this.lives++;
+
 		this.bulletsShot = gameState.getBulletsShot();
 		this.shipsDestroyed = gameState.getShipsDestroyed();
 	}
@@ -109,6 +110,7 @@ public class GameScreen extends Screen {
 		enemyShipFormation = new EnemyShipFormation(this.gameSettings);
 		enemyShipFormation.attach(this);
 		this.ship = new Ship(this.width / 2, this.height - 30);
+		this.ship.SetColor(lives);
 		// Appears each 10-30 seconds.
 		this.enemyShipSpecialCooldown = Core.getVariableCooldown(
 				BONUS_SHIP_INTERVAL, BONUS_SHIP_VARIANCE);
@@ -278,6 +280,8 @@ public class GameScreen extends Screen {
 						userDieSound.play(true);
 						this.ship.destroy();
 						this.lives--;
+						ship.SetColor(lives);
+
 						this.logger.info("Hit on player ship, " + this.lives
 								+ " lives remaining.");
 					}
