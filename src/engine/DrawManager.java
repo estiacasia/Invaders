@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
-
 /**
  * Manages screen drawing.
  * 
@@ -253,9 +252,19 @@ public final class DrawManager {
 	 */
 	public void drawLives(final Screen screen, final int lives) {
 		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.setColor(Color.WHITE);
+		if(lives >= 3) {
+			backBufferGraphics.setColor(Color.GREEN);;
+		}
+		else if(lives == 2) {
+			backBufferGraphics.setColor(Color.YELLOW);
+		}
+		else {
+			backBufferGraphics.setColor(Color.RED);
+		}
+		//backBufferGraphics.setColor(Color.GREEN);
 		backBufferGraphics.drawString(Integer.toString(lives), 20, 25);
 		Ship dummyShip = new Ship(0, 0);
+		dummyShip.SetColor(lives);
 		for (int i = 0; i < lives; i++)
 			drawEntity(dummyShip, 40 + 35 * i, 10);
 	}
