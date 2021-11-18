@@ -57,6 +57,16 @@ public class Entity {
 		return color;
 	}
 
+	public void SetColor(int i){
+		if (i==1){
+			color = Color.red;
+		}else if(i==2){
+			color = Color.orange;
+		}else {
+			color = Color.green;
+		}
+	}
+
 	/**
 	 * Getter for the X axis position of the entity.
 	 * 
