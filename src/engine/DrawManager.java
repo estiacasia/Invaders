@@ -344,13 +344,13 @@ public final class DrawManager {
 	 */
 	public void drawPause(final Screen screen, final int number, final boolean isPause,
 						  final int option, final int level, final int score, final int liveRemaining) {
-		int frameHeight = screen.getHeight() / 2 ;
+		int frameHeight = screen.getHeight()*2/3 ;
 		int frameWidth = screen.getWidth();
 		String titleInfo = "Restart ?";
 		String stateInfo = "LV_" + level + "   LIFE_ " + liveRemaining + "  Score_ " + score;
 		String instructionsInfo = "USE DIRECTION KEY <LEFT or RIGHT> SELECT";
-		String resumeInfo = "Resume";
-		String restartInfo = "Restart";
+		String resumeInfo = "Resume?";
+		String restartInfo = "Restart?";
 
 		backBufferGraphics.setColor(Color.BLACK);
 		backBufferGraphics.fillRect(0, screen.getHeight() / 2 - frameHeight / 2,
@@ -358,10 +358,10 @@ public final class DrawManager {
 		backBufferGraphics.setColor(Color.GREEN);
 		drawCenteredBigString(screen, titleInfo,
 				screen.getHeight() / 2 - fontBigMetrics.getHeight() * 2);
-		backBufferGraphics.setColor(Color.GREEN);
+		backBufferGraphics.setColor(Color.orange);
 		drawCenteredRegularString(screen, stateInfo,
 				screen.getHeight() / 2 - fontRegularMetrics.getHeight());
-		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.setColor(Color.LIGHT_GRAY);
 		drawCenteredRegularString(screen, instructionsInfo,
 				screen.getHeight() / 2 + fontRegularMetrics.getHeight());
 		if (option == 0)
