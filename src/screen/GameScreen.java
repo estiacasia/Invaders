@@ -64,6 +64,16 @@ public class GameScreen extends Screen {
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
+	/** pause 버튼 누른 건지 확인하기*/
+	private boolean is_Pause;
+	/** Check if the game will restart */
+	private boolean is_Resume;
+	/** Milliseconds between changes in user selection. */
+	private static final int SELECTION_TIME = 200;
+
+	/** Time between changes in user selection. */
+	private Cooldown selectionCooldown;
+
 
 	public SoundEffects enemyDieSound = new SoundEffects("enemydiesound.wav");
 	public SoundEffects userDieSound = new SoundEffects("usershipdiesound.wav");
@@ -96,6 +106,7 @@ public class GameScreen extends Screen {
 		this.lives = gameState.getLivesRemaining();
 		if (this.bonusLife)
 			this.lives++;
+
 		this.bulletsShot = gameState.getBulletsShot();
 		this.shipsDestroyed = gameState.getShipsDestroyed();
 	}
@@ -109,6 +120,7 @@ public class GameScreen extends Screen {
 		enemyShipFormation = new EnemyShipFormation(this.gameSettings);
 		enemyShipFormation.attach(this);
 		this.ship = new Ship(this.width / 2, this.height - 30);
+		this.ship.SetColor(lives);
 		// Appears each 10-30 seconds.
 		this.enemyShipSpecialCooldown = Core.getVariableCooldown(
 				BONUS_SHIP_INTERVAL, BONUS_SHIP_VARIANCE);
@@ -134,6 +146,7 @@ public class GameScreen extends Screen {
 		super.run();
 
 		this.score += LIFE_SCORE * (this.lives - 1);
+		this.is_Pause =false;
 		this.logger.info("Screen cleared with a score of " + this.score);
 		return this.returnCode;
 	}
@@ -188,6 +201,47 @@ public class GameScreen extends Screen {
 				this.logger.info("The special ship has escaped");
 				this.lives--;
 			}
+			if (inputManager.isKeyDown(KeyEvent.VK_ESCAPE)
+					|| inputManager.isKeyDown(KeyEvent.VK_P))
+				is_Pause = true;
+			while (is_Pause) {
+				if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+					ItemPrevious();}
+				if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
+					ItemNext();}
+				if (inputManager.isKeyDown(KeyEvent.VK_SPACE)) {
+					try {
+						if (this.returnCode == 0) {
+							this.is_Pause = false;
+						}
+						else if (this.returnCode == 1) {
+							is_Resume = true;
+							while (is_Resume) {
+								if (inputManager.isKeyDown(KeyEvent.VK_LEFT)) {
+									ItemPrevious();}
+								if (inputManager.isKeyDown(KeyEvent.VK_RIGHT)) {
+									ItemNext();}
+								if ( inputManager.isKeyDown(KeyEvent.VK_ENTER))
+									try {
+										if (this.returnCode == 1) {
+											this.is_Pause = false;
+											this.is_Resume = false;
+										} else if (this.returnCode == 0) {
+											BGM.stop();
+											this.lives = -1;
+											this.is_Pause = false;
+											this.is_Resume = false;
+											this.isRunning = false;
+										}Thread.sleep(200);  //잠깐 멈춰주고 시작
+									} catch (InterruptedException e) {}
+								drawChecking(this.returnCode);
+							}
+						}
+						Thread.sleep(200);
+						} catch (InterruptedException e) { }
+				}
+				drawPause(this.returnCode);
+			}
 
 			this.ship.update();
 			this.enemyShipFormation.update();
@@ -210,6 +264,28 @@ public class GameScreen extends Screen {
 
 	}
 
+	private void ItemNext() {
+		this.returnCode = 1;
+	}
+	private void ItemPrevious() {
+		this.returnCode = 0;
+	}
+
+	private void drawPause(final int option) {
+		drawManager.drawPause(this, INPUT_DELAY, this.is_Pause,
+				option, this.level, this.score, this.lives);
+		drawManager.drawHorizontalLine(this, this.height / 2 - this.height
+				/ 4);
+		drawManager.drawHorizontalLine(this, this.height / 2 + this.height
+				/ 4);
+		drawManager.completeDrawing(this);
+	}
+	private void drawChecking(final int option) {
+		drawManager.initDrawing(this);
+		drawManager.drawCheckingScreen(this);
+		drawManager.drawChecking(this, option);
+		drawManager.completeDrawing(this);
+	}
 	/**
 	 * Draws the elements associated with the screen.
 	 */
@@ -278,6 +354,8 @@ public class GameScreen extends Screen {
 						userDieSound.play(true);
 						this.ship.destroy();
 						this.lives--;
+						ship.SetColor(lives);
+
 						this.logger.info("Hit on player ship, " + this.lives
 								+ " lives remaining.");
 					}
