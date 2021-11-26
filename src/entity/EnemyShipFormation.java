@@ -40,7 +40,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	/** Downwards speed of the formation. */
 	private static final int Y_SPEED = 4;
 	/** Speed of the bullets shot by the members. */
-	private static final int BULLET_SPEED = 4;
+	private static  int BULLET_SPEED = 4;
 	/** Proportion of differences between shooting times. */
 	private static final double SHOOTING_VARIANCE = .2;
 	/** Margin on the sides of the screen. */
@@ -108,6 +108,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		/** Movement to the bottom of the screen. */
 		DOWN
 	};
+	private int gamespeed=1;
 
 	/**
 	 * Constructor, sets the initial conditions.
@@ -172,7 +173,19 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		for (List<EnemyShip> column : this.enemyShips)
 			this.shooters.add(column.get(column.size() - 1));
 	}
-
+	public void SpeedSet(int i){
+		if (i ==1){
+			this.gamespeed++;
+			this.movementSpeed ++;
+			this.BULLET_SPEED++;
+		}else{
+			if (this.gamespeed!=0) {
+				this.gamespeed--;
+				this.movementSpeed--;
+				this.BULLET_SPEED--;
+			}
+		}
+	}
 	/**
 	 * Associates the formation to a given screen.
 	 * 
@@ -204,7 +217,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		}
 		
 		cleanUp();
-
+		for (int k=0; k<gamespeed; k++){
 		int movementX = 0;
 		int movementY = 0;
 		double remainingProportion = (double) this.shipCount
@@ -285,6 +298,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					enemyShip.move(movementX, movementY);
 					enemyShip.update();
 				}
+		}
 		}
 	}
 
