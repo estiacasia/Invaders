@@ -148,13 +148,26 @@ public class GameScreen extends Screen {
 		this.logger.info("Screen cleared with a score of " + this.score);
 		return this.returnCode;
 	}
+	public void speedDown(){
+		this.ship.SpeedSet(-1);
+		this.enemyShipFormation.SpeedSet(-1);
+	}
 
+	public void speedUp(){
+		this.ship.SpeedSet(1);
+		this.enemyShipFormation.SpeedSet(1);
+	}
 	/**
 	 * Updates the elements on screen and checks for events.
 	 */
 	protected final void update() {
 		super.update();
-
+		if (inputManager.isKeyDown(KeyEvent.VK_U)){
+			speedUp();
+		}
+		if (inputManager.isKeyDown(KeyEvent.VK_I)){
+			speedDown();
+		}
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
 			if (!this.ship.isDestroyed()) {
