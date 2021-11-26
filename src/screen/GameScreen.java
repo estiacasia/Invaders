@@ -1,11 +1,9 @@
 package screen;
 
-import engine.Cooldown;
-import engine.Core;
-import engine.GameSettings;
-import engine.GameState;
+import engine.*;
 import entity.*;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
@@ -289,6 +287,16 @@ public class GameScreen extends Screen {
 			} else {
 				for (EnemyShip enemyShip : this.enemyShipFormation)
 					if (!enemyShip.isDestroyed()
+							&& checkCollision(bullet, enemyShip)
+							&& enemyShip.getColor() == Color.WHITE
+							&& (enemyShip.getSpriteType() == DrawManager.SpriteType.EnemyShipD1
+								|| enemyShip.getSpriteType() == DrawManager.SpriteType.EnemyShipD2)) {
+						enemyDieSound.play(true);
+						this.shipsDestroyed++;
+						enemyShip.SetColor(1);
+						recyclable.add(bullet);
+					}
+					else if (!enemyShip.isDestroyed()
 							&& checkCollision(bullet, enemyShip)) {
 						enemyDieSound.play(true);
 						this.score += enemyShip.getPointValue();
