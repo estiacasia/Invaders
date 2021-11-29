@@ -174,18 +174,22 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 			this.shooters.add(column.get(column.size() - 1));
 	}
 	public void SpeedSet(int i){
-		if (i ==1){
-			this.gamespeed++;
-			this.movementSpeed ++;
-			this.BULLET_SPEED++;
-		}else{
-			if (this.gamespeed!=0) {
-				this.gamespeed--;
-				this.movementSpeed--;
-				this.BULLET_SPEED--;
-			}
-		}
-	}
+        if (i ==1){
+        	if(this.gamespeed <= 12) {
+		        this.gamespeed++;
+		        this.movementSpeed ++;
+		        this.BULLET_SPEED++;
+        	}
+        }else{
+            if (this.gamespeed >= 2) {
+	                this.gamespeed--;
+	            	this.movementSpeed--;
+	            	this.BULLET_SPEED--;
+            }
+            
+        }
+   }
+
 	/**
 	 * Associates the formation to a given screen.
 	 * 
