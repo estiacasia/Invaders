@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.event.MenuKeyEvent;
 /**
  * Implements the game screen, where the action happens.
  *
@@ -62,7 +64,7 @@ public class GameScreen extends Screen {
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
-	/** pause 버튼 누른 건지 확인하기*/
+	/** pause 踰꾪듉 �늻瑜� 嫄댁� �솗�씤�븯湲�*/
 	private boolean is_Pause;
 	/** Check if the game will restart */
 	private boolean is_Resume;
@@ -162,9 +164,8 @@ public class GameScreen extends Screen {
 	 */
 	protected final void update() {
 		super.update();
-		if (inputManager.isKeyDown(KeyEvent.VK_U)){
+		if(inputManager.isKeyDown(KeyEvent.VK_U))
 			speedUp();
-		}
 		if (inputManager.isKeyDown(KeyEvent.VK_I)){
 			speedDown();
 		}
@@ -243,7 +244,7 @@ public class GameScreen extends Screen {
 											this.is_Pause = false;
 											this.is_Resume = false;
 											this.isRunning = false;
-										}Thread.sleep(200);  //잠깐 멈춰주고 시작
+										}Thread.sleep(200);  //
 									} catch (InterruptedException e) {}
 								drawChecking(this.returnCode);
 							}
@@ -320,6 +321,7 @@ public class GameScreen extends Screen {
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
 		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1);
+		drawManager.drawSpeed(this, this.ship.SPEED);
 
 		// Countdown to game start.
 		if (!this.inputDelay.checkFinished()) {
