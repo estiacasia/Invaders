@@ -278,6 +278,12 @@ public final class DrawManager {
 		for (int i = 0; i < lives; i++)
 			drawEntity(dummyShip, 40 + 35 * i, 10);
 	}
+	
+	public void drawSpeed(final Screen screen, final int speed) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString("Speed : " + Integer.toString(Ship.SPEED), 200, 25);
+		
+	}
 
 	/**
 	 * Draws a thick line from side to side of the screen.
