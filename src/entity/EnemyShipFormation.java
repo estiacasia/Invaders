@@ -29,16 +29,18 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 	private static final int INIT_POS_Y = 100;
 	/** Distance between ships. */
 	private static final int SEPARATION_DISTANCE = 40;
+	/** Proportion of D-type ships. */
+	private static final double PROPORTION_D = 0.1;
 	/** Proportion of C-type ships. */
-	private static final double PROPORTION_C = 0.2;
+	private static final double PROPORTION_C = 0.3;
 	/** Proportion of B-type ships. */
-	private static final double PROPORTION_B = 0.4;
+	private static final double PROPORTION_B = 0.3;
 	/** Lateral speed of the formation. */
 	private static final int X_SPEED = 8;
 	/** Downwards speed of the formation. */
 	private static final int Y_SPEED = 4;
 	/** Speed of the bullets shot by the members. */
-	private static final int BULLET_SPEED = 4;
+	private static  int BULLET_SPEED = 4;
 	/** Proportion of differences between shooting times. */
 	private static final double SHOOTING_VARIANCE = .2;
 	/** Margin on the sides of the screen. */
@@ -106,6 +108,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		/** Movement to the bottom of the screen. */
 		DOWN
 	};
+	private int gamespeed=1;
 
 	/**
 	 * Constructor, sets the initial conditions.
@@ -140,10 +143,13 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 
 		for (List<EnemyShip> column : this.enemyShips) {
 			for (int i = 0; i < this.nShipsHigh; i++) {
-				if (i / (float) this.nShipsHigh < PROPORTION_C)
+				if (i / (float) this.nShipsHigh < PROPORTION_D)
+					spriteType = SpriteType.EnemyShipD1;
+				else if (i / (float) this.nShipsHigh < PROPORTION_C
+						+ PROPORTION_D)
 					spriteType = SpriteType.EnemyShipC1;
 				else if (i / (float) this.nShipsHigh < PROPORTION_B
-						+ PROPORTION_C)
+						+ PROPORTION_C + PROPORTION_D)
 					spriteType = SpriteType.EnemyShipB1;
 				else
 					spriteType = SpriteType.EnemyShipA1;
@@ -167,6 +173,22 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		for (List<EnemyShip> column : this.enemyShips)
 			this.shooters.add(column.get(column.size() - 1));
 	}
+	public void SpeedSet(int i){
+        if (i ==1){
+        	if(this.gamespeed <= 12) {
+		        this.gamespeed++;
+		        this.movementSpeed ++;
+		        this.BULLET_SPEED++;
+        	}
+        }else{
+            if (this.gamespeed >= 2) {
+	                this.gamespeed--;
+	            	this.movementSpeed--;
+	            	this.BULLET_SPEED--;
+            }
+            
+        }
+   }
 
 	/**
 	 * Associates the formation to a given screen.
@@ -199,7 +221,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 		}
 		
 		cleanUp();
-
+		for (int k=0; k<gamespeed; k++){
 		int movementX = 0;
 		int movementY = 0;
 		double remainingProportion = (double) this.shipCount
@@ -280,6 +302,7 @@ public class EnemyShipFormation implements Iterable<EnemyShip> {
 					enemyShip.move(movementX, movementY);
 					enemyShip.update();
 				}
+		}
 		}
 	}
 

@@ -1,14 +1,14 @@
 package screen;
 
-import engine.Cooldown;
-import engine.Core;
-import engine.GameSettings;
-import engine.GameState;
+import engine.*;
 import entity.*;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.event.MenuKeyEvent;
 /**
  * Implements the game screen, where the action happens.
  *
@@ -64,7 +64,7 @@ public class GameScreen extends Screen {
 	private boolean levelFinished;
 	/** Checks if a bonus life is received. */
 	private boolean bonusLife;
-	/** pause 버튼 누른 건지 확인하기*/
+	/** pause 踰꾪듉 �늻瑜� 嫄댁� �솗�씤�븯湲�*/
 	private boolean is_Pause;
 	/** Check if the game will restart */
 	private boolean is_Resume;
@@ -150,13 +150,25 @@ public class GameScreen extends Screen {
 		this.logger.info("Screen cleared with a score of " + this.score);
 		return this.returnCode;
 	}
+	public void speedDown(){
+		this.ship.SpeedSet(-1);
+		this.enemyShipFormation.SpeedSet(-1);
+	}
 
+	public void speedUp(){
+		this.ship.SpeedSet(1);
+		this.enemyShipFormation.SpeedSet(1);
+	}
 	/**
 	 * Updates the elements on screen and checks for events.
 	 */
 	protected final void update() {
 		super.update();
-
+		if(inputManager.isKeyDown(KeyEvent.VK_U))
+			speedUp();
+		if (inputManager.isKeyDown(KeyEvent.VK_I)){
+			speedDown();
+		}
 		if (this.inputDelay.checkFinished() && !this.levelFinished) {
 
 			if (!this.ship.isDestroyed()) {
@@ -232,7 +244,7 @@ public class GameScreen extends Screen {
 											this.is_Pause = false;
 											this.is_Resume = false;
 											this.isRunning = false;
-										}Thread.sleep(200);  //잠깐 멈춰주고 시작
+										}Thread.sleep(200);  //
 									} catch (InterruptedException e) {}
 								drawChecking(this.returnCode);
 							}
@@ -309,6 +321,7 @@ public class GameScreen extends Screen {
 		drawManager.drawScore(this, this.score);
 		drawManager.drawLives(this, this.lives);
 		drawManager.drawHorizontalLine(this, SEPARATION_LINE_HEIGHT - 1);
+		drawManager.drawSpeed(this, this.ship.SPEED);
 
 		// Countdown to game start.
 		if (!this.inputDelay.checkFinished()) {
@@ -363,6 +376,16 @@ public class GameScreen extends Screen {
 			} else {
 				for (EnemyShip enemyShip : this.enemyShipFormation)
 					if (!enemyShip.isDestroyed()
+							&& checkCollision(bullet, enemyShip)
+							&& enemyShip.getColor() == Color.WHITE
+							&& (enemyShip.getSpriteType() == DrawManager.SpriteType.EnemyShipD1
+								|| enemyShip.getSpriteType() == DrawManager.SpriteType.EnemyShipD2)) {
+						enemyDieSound.play(true);
+						this.shipsDestroyed++;
+						enemyShip.SetColor(1);
+						recyclable.add(bullet);
+					}
+					else if (!enemyShip.isDestroyed()
 							&& checkCollision(bullet, enemyShip)) {
 						enemyDieSound.play(true);
 						this.score += enemyShip.getPointValue();

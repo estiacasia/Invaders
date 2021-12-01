@@ -15,7 +15,6 @@ import java.util.logging.Logger;
 import screen.Screen;
 import entity.Entity;
 import entity.Ship;
-
 /**
  * Manages screen drawing.
  *
@@ -76,6 +75,10 @@ public final class DrawManager {
 		EnemyShipC1,
 		/** Third enemy ship - second form. */
 		EnemyShipC2,
+		/** Fourth enemy ship - first form. */
+		EnemyShipD1,
+		/** Fourth enemy ship - second form. */
+		EnemyShipD2,
 		/** Bonus ship. */
 		EnemyShipSpecial,
 		/** Destroyed enemy ship. */
@@ -103,6 +106,8 @@ public final class DrawManager {
 			spriteMap.put(SpriteType.EnemyShipB2, new boolean[12][8]);
 			spriteMap.put(SpriteType.EnemyShipC1, new boolean[12][8]);
 			spriteMap.put(SpriteType.EnemyShipC2, new boolean[12][8]);
+			spriteMap.put(SpriteType.EnemyShipD1, new boolean[12][8]);
+			spriteMap.put(SpriteType.EnemyShipD2, new boolean[12][8]);
 			spriteMap.put(SpriteType.EnemyShipSpecial, new boolean[16][7]);
 			spriteMap.put(SpriteType.Explosion, new boolean[13][7]);
 
@@ -257,11 +262,27 @@ public final class DrawManager {
 	 */
 	public void drawLives(final Screen screen, final int lives) {
 		backBufferGraphics.setFont(fontRegular);
-		backBufferGraphics.setColor(Color.WHITE);
+		if(lives >= 3) {
+			backBufferGraphics.setColor(Color.GREEN);;
+		}
+		else if(lives == 2) {
+			backBufferGraphics.setColor(Color.YELLOW);
+		}
+		else {
+			backBufferGraphics.setColor(Color.RED);
+		}
+		//backBufferGraphics.setColor(Color.GREEN);
 		backBufferGraphics.drawString(Integer.toString(lives), 20, 25);
 		Ship dummyShip = new Ship(0, 0);
+		dummyShip.SetColor(lives);
 		for (int i = 0; i < lives; i++)
 			drawEntity(dummyShip, 40 + 35 * i, 10);
+	}
+	
+	public void drawSpeed(final Screen screen, final int speed) {
+		backBufferGraphics.setFont(fontRegular);
+		backBufferGraphics.drawString("Speed : " + Integer.toString(Ship.SPEED), 200, 25);
+		
 	}
 
 	/**
@@ -436,7 +457,7 @@ public final class DrawManager {
 							final float accuracy, final boolean isNewRecord) {
 		String scoreString = String.format("score %04d", score);
 		String livesRemainingString = "lives remaining " + livesRemaining;
-		String shipsDestroyedString = "enemies destroyed " + shipsDestroyed;
+		String shipsDestroyedString = "number of hits " + shipsDestroyed;
 		String accuracyString = String
 				.format("accuracy %.2f%%", accuracy * 100);
 

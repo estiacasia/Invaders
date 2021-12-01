@@ -19,10 +19,24 @@ public class Ship extends Entity {
 	/** Time between shots. */
 	private static final int SHOOTING_INTERVAL = 400;
 	/** Speed of the bullets shot by the ship. */
-	private static final int BULLET_SPEED = -7;
+	private int BULLET_SPEED = -7;
 	/** Movement of the ship for each unit of time. */
-	private static final int SPEED = 3;
-
+	public static int SPEED = 3;
+	public void SpeedSet(int i){
+		if (i == 1){
+			if(SPEED <= 15) {
+				SPEED ++;
+				this.BULLET_SPEED--;
+			}
+		System.out.println(SPEED);
+		}else{
+			if(SPEED >= 2) {
+				SPEED --;
+				this.BULLET_SPEED++;
+			}
+		}
+		System.out.println(SPEED);
+	}
 	/** Minimum time between shots. */
 	private Cooldown shootingCooldown;
 	/** Time spent inactive between hits. */
