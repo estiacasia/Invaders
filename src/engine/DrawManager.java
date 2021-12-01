@@ -419,16 +419,15 @@ public final class DrawManager {
 	}
 
 	public void drawCheckingScreen(final Screen screen){
-		String InfocheckA = "Are you sure";
 		String InfocheckB = "Return to title?";
-		String InfoWarning = "The score will not be saved";
+		String InfoWarning = "You can still save the score";
 
 		backBufferGraphics.setColor(Color.GREEN);
-		drawCenteredBigString(screen, InfocheckA, screen.getHeight()/3);
+
 		drawCenteredBigString(screen, InfocheckB, screen.getHeight()/3
 				+ fontBigMetrics.getHeight() * 6 / 7);
 
-		backBufferGraphics.setColor(Color.WHITE);
+		backBufferGraphics.setColor(Color.lightGray);
 		drawCenteredRegularString(screen, InfoWarning, screen.getHeight()/3
 				+ fontBigMetrics.getHeight() * 2);
 	}
